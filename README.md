@@ -1,33 +1,90 @@
-# 汇报材料包(2026-11-17)— 先看这里
+# Detecting the Detector
 
-INT4096 小组项目 **Detecting the Detector**。这个包里是做汇报 PPT 和写报告需要的全部材料。**草稿截止:11/18(周三)18:00;终稿:11/28(周六)23:59。**
+Code and data for an INT4096 group project: **do AI-text detectors wrongly flag essays by non-native English writers,
+and does it help to train detectors on non-native writing?**
 
-## 文件夹地图
+We trained three detector families on identical data in four training sets ("arms"), changing only the human essays:
 
-| 文件夹 | 里面是什么 | 谁会用到 |
+| arm | human essays (4,000) | AI essays (4,000) |
 |---|---|---|
-| `00_先看这里/` | 本文件 + **汇报总览与待办.md**(16 页怎么搭、谁讲、数字小抄、待办) | 所有人 |
-| `01_图-16比9/` | **23 张汇报用图**(1920×1080 PNG)、每张图的数据表 `tables/`、原始指标 `data/`、画图脚本 | 做 PPT 的人 |
-| `02_幻灯片文字/` | 开场三页(标题页、开场故事、为什么选这个题)和第 4 页"我们的新东西"的**英文文字和讲稿** | 做 PPT 的人、讲的人 |
-| `03_结果表/` | 所有实验结果 CSV(各模型×各训练数据×各考卷、精确率/F1、配对检验、长度控制) | 写报告的人 |
-| `04_可复现-脚本与预注册/` | 全部分析脚本、训练前冻结的评估指标(PREREG)、第一轮总报告 | 写 notebook 的人、被问"怎么做的"时 |
-| `05_评审与工单记录/` | 之前的三份评审报告和给 opencode 的工单(含已作废的,仅作记录) | 备查 |
-| `06_PPT草稿/` | **PPT 草稿**(34 页:16 页主讲 + 感谢 + 参考文献 + 分隔页 + 15 页备用;每页自带"做了什么/看到什么/为什么重要"三行说明,英文讲稿在备注里;另存有前两版 *_v2_before_plainwords 和 *_14slides_old)、PDF 预览、缩略图总览、构建脚本 | **所有人先打开这个** |
+| A | native only (PERSUADE 2.0) | daigt + HC-Var ChatGPT |
+| B | half native + school-age non-native (ELLIPSE, PERSUADE ELL) | same |
+| C | half native + exam-style non-native (FCE, W&I) | same |
+| D (control) | half native + other native writing (HC-Var human) | same |
 
-## 最短上手路线(今晚)
-**0. 直接打开 `06_PPT草稿/DetectingTheDetector_draft_1118.pptx`,下面第 1-4 步里"拼页"已经做完了,只需要填空和改词。**
-1. 打开 `00_先看这里/汇报总览与待办.md`,看"16 页怎么搭"那张表。
-2. (已由 PPT 草稿完成;想自己改图,用 `01_图-16比9/` 的 PNG 和 `make_figures.py`。)
-3. 文字页(第 3 页、第 16 页,以及第 4 页右侧的文字)用 `02_幻灯片文字/` 和总览里的英文稿。
-4. 填上总览里标 **[team: confirm]** 的两处(你们选这个题的真实理由)。
-5. 加上 **AI 使用声明**(总览里有草稿)。
+Detectors: TF-IDF + logistic regression (5 seeds), RoBERTa-base full fine-tune (5 seeds), Qwen3.8-27B + LoRA
+(2 seeds); for comparison, the open-source zero-shot detectors Binoculars and Fast-DetectGPT, and the commercial
+detectors archived by Liang et al. (2023). Main test set: Liang et al.'s 91 real TOEFL essays vs native essays.
 
-## 要知道的几件事
-- **数字只引用 `01_图-16比9/tables/` 里的**。统一阈值 0.5(开源检测器用官方阈值);逻辑回归和 RoBERTa 5 个随机种子,Qwen 只有 2 个。
-- `04_可复现-脚本与预注册/FINAL_REPORT.md` 是**第一轮**总报告,没有包含后来加的 C/D 对照、精确率/F1、"哪些句子惹祸"。**以图和 `03_结果表/` 为准**。
-- `01_图-16比9/data/` 里有两份从服务器拉回的原始指标;服务器上完整数据(预测、模型、切分)在 `111.48.160.138:/data/int4096_unified_v4/`,体积大,没放进包里。
-- 包里**没有密码、没有 API key**(已扫描)。生产服务的启停脚本没放进来(和作业无关)。
-- 想改图的数字或样式:改 `01_图-16比9/make_figures.py`,命令见同目录 `README.md`。需要 Python 的 matplotlib 和 pandas。
+## Notebooks
 
-- **PPT 草稿里要你们填的:**第 3 页两处黄色 `[TEAM: ...]`(真实选题理由);第 16 页 AI 使用声明的措辞;备注里的讲者 A–E 换成真名。
-- **PPT 草稿的已知限制:**用 LibreOffice 渲染检查,PowerPoint 里请翻一遍;Google Slides / Keynote 会替换字体;图占窗口宽度约 78-86%,图里最小的字(如第 6 页的 `ppl 16`、备用页的完整大表)投影时偏小。
+Open any notebook in Colab with the badge at its top (or *File > Open notebook > GitHub* and paste this repo's
+address), then *Runtime > Run all*. The first cell finds or downloads the repository; nothing needs editing.
+Each notebook has a CONFIG cell with three modes: SMOKE (seconds, for automated tests), FAST (default) and FULL
+(paper setting). Times below were measured on a laptop CPU (Apple M-series); expect Colab's CPU to be slower.
+
+| notebook | what it does | re-run or replayed | FAST time | GPU |
+|---|---|---|---|---|
+| `00_setup_and_data` | gets the data, checks file fingerprints, split sizes, zero overlap between training and test essays, text cleaning | checks run on the data | ~30 s | no |
+| `01_audit_commercial_and_opensource` | audit of the 7 commercial and 2 open-source detectors: false-flag rates, AUCs, F1, length control, why predictable text looks like AI; Binoculars and Fast-DetectGPT written out from the papers | numbers **replayed** from saved scores; live demo with small stand-in models (gpt2 pair on CPU) | ~2 min (CPU) | optional |
+| `02_ml_logistic_regression` | trains TF-IDF + logistic regression for arms A-D x 5 seeds, false-flag rates, precision/recall/F1, comparison with the archived numbers | **re-run** from scratch | ~1.5 min (FULL ~2.5 min) | no |
+| `03_dl_roberta` | RoBERTa-base fine-tuning, arms A-D | all 40 archived runs **replayed** in every mode; **re-training** in SMOKE (64 essays, ~1 min on CPU), FAST (arms A, C, 1 seed) and FULL (4 arms x 5 seeds) | SMOKE ~1 min; FAST/FULL need a GPU (estimates on a T4: FAST 30-50 min, FULL 5-8.5 h, **not measured**) | T4 for FAST/FULL |
+| `04_lora_qwen` | Qwen3.8-27B + LoRA: replay of the 27B results, a look inside the published LoRA adapters (reads only the file header, checks 124,741,120 parameters), and a small **stand-in** LoRA training on Qwen3-0.6B | 27B numbers **replayed**; adapter inspection reads one adapter from Hugging Face; stand-in is **re-run** (SMOKE ~5 min on CPU; FAST/FULL on a T4 are estimates, not measured) | SMOKE ~5 min | T4 for FAST/FULL |
+| `05_metrics_and_figures` | recomputes all headline tables for all detectors and draws the main figures | **replayed** from saved scores in `data/preds/` and `data/commercial/` | ~5 s | no |
+
+What is replayed rather than re-run (notebook 05): RoBERTa and Qwen 27B scores (trained on the A40 server),
+Binoculars and Fast-DetectGPT scores (falcon-7b pair, run on the A40 server), commercial detector scores (archived
+by Liang et al. in 2023; the 2023 detector versions can no longer be queried). The logistic regression scores in
+`data/preds/lr/` are also the archived ones; notebook 02 re-trains the model and compares against them.
+
+The eight Qwen LoRA adapters (3.99 GB) are on Hugging Face (private):
+`SheridanLu/detecting-the-detector-qwen-lora`. Notebook 04 reads a token from the Colab secret `HF_TOKEN`
+(or the environment variable). Cloning this repository while it is private needs a GitHub token in the Colab
+secret `GH_TOKEN`; otherwise upload the repository as a zip (the first cell explains how).
+
+## Data
+
+| folder | content | size |
+|---|---|---|
+| `data/splits/` | test essays (E1-E7), training pool, validation set, training-set id lists, split summary with SHA-256 | 55 MB |
+| `data/followup/` | training sets of arms C and D, ids of exam essays used for training (excluded from evaluation) | 106 MB |
+| `data/preds/` | per-essay scores of every trained run and of the two open-source detectors | 19 MB |
+| `data/ppl/` | per-essay falcon-7b perplexity and GPTZero perplexity of the TOEFL, Hewlett, college and CS224N essays | <1 MB |
+| `data/commercial/` | scores of 7 commercial detectors on the Liang et al. essays | 0.1 MB |
+| `data/results/` | result tables computed by the original run (the reference for all checks) | 0.3 MB |
+
+Every file is described (columns, rows, origin) in [`data/README.md`](data/README.md). The original scripts are in
+[`a40/`](a40/README.md), unchanged; `ddlib/` is the small helper package the notebooks import (paths, text cleaning
+copied from the original, metrics, plots). To run outside Colab:
+`python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-colab.txt jupyter`.
+
+## Limits: what cannot be reproduced on free Colab
+
+* **Qwen3.8-27B + LoRA** exists only on the A40 server (weights dequantised there from FP8); training took about 4 h
+  on two 46 GB GPUs per run. Its numbers can only be replayed from the saved scores.
+* **Binoculars / Fast-DetectGPT** need falcon-7b and falcon-7b-instruct together (about 28 GB in bf16), which does not
+  fit a 16 GB T4. Replayed only.
+* **Commercial detectors**: the 2023 versions are gone; we use the scores archived by Liang et al.
+* **Logistic regression** re-runs agree with the archived numbers within the stated tolerances but are not
+  bit-identical: the solver stops after ~20 iterations, and floating-point differences between machines move that
+  point slightly. On our test machine 0.26% of individual decisions at threshold 0.5 changed; all 40 headline
+  checks (arms A-D) stayed within 0.5 percentage points / 0.004 F1, and the learning-curve runs within 1.1 points.
+* The notebooks were tested locally on CPU (macOS, Python 3.12, clean virtual environments): 00, 02 and 05 in SMOKE,
+  FAST and FULL; 01 in SMOKE and FAST; 03 and 04 in SMOKE only. **Nothing has been run on a GPU or on a real Colab
+  runtime**: RoBERTa re-training (03, FAST/FULL) and the Qwen3-0.6B stand-in training (04, FAST/FULL) are untested on
+  a GPU, and their T4 times are estimates. A FAST attempt of notebook 03 on a laptop GPU was abandoned (arm A alone
+  took 37 minutes).
+* The Qwen LoRA adapters attach LoRA matrices to every linear layer, including the image encoder; 110 `lora_B`
+  matrices there are exactly zero (never updated; the task is text only), so slightly fewer than the 124,741,120
+  parameters marked trainable actually changed. No prediction is affected.
+* Study limits (small TOEFL sample of 91 essays, only 2 Qwen seeds, a degenerate 90%-detection threshold for Qwen,
+  corpora that differ in age and genre) are stated in the notebooks where they matter.
+
+## Data sources, licence and ethics
+
+The essays come from public third-party corpora: PERSUADE 2.0, ELLIPSE, daigt_v4, HC-Var, Write & Improve +
+LOCNESS, the Cambridge FCE dataset, ArguGPT, and the TOEFL / Hewlett / CS224N / college-essay benchmark of Liang et
+al. (2023, "GPT detectors are biased against non-native English writers"). They are included only as the
+pre-split subsets needed to reproduce this coursework, remain under their original licences and terms of use, and
+must not be redistributed for other purposes; please obtain them from the original sources for any other use. The
+corpora are anonymised by their publishers; we added no personal data. Our own code is for teaching and assessment.

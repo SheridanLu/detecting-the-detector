@@ -1,0 +1,5 @@
+# Extra packages for notebook 01 (live demo of Binoculars and Fast-DetectGPT with small stand-in models).
+# Google Colab already has torch and transformers, so on Colab these lines change nothing.
+# Outside Colab: python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-colab.txt -r requirements-nb01.txt jupyter
+torch>=2.2
+transformers>=4.44

@@ -1,5 +1,0 @@
-pitfall,what_went_wrong,number,caption,change
-1,Our first model looked strong,0.890 vs 0.888,AUC of our model vs just guessing which corpus an essay came from,We stopped using it as evidence and tested detectors on seven new data sources.
-2,RoBERTa learned a formatting shortcut: no paragraph breaks and curly quotes meant AI,0.04 to 0.91,"AUC for AI vs human essays on the same prompts, before and after cleaning",We made every text look the same and added a check that no formatting difference is left.
-3,Qwen was tested on essays it had trained on,0% to 40%,TOEFL essays flagged as AI (2 seeds: 56% and 23%),"We kept TOEFL out of training, retrained and re-tested."
-4,Our native comparison was unfair: it looked like the training essays,2% vs 80-100%,"native essays flagged: training-like vs new style (logistic regression, RoBERTa)",We added arms C and D and tested several kinds of native writing.

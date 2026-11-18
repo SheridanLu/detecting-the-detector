@@ -1,0 +1,8 @@
+# Notebook 03 (RoBERTa) needs torch and transformers on top of requirements-colab.txt.
+# Google Colab already has both preinstalled: the first notebook cell installs a line below ONLY if that package
+# cannot be imported, so Colab's own torch (built for its GPU) is never replaced.
+# Outside Colab (plain Python 3.10-3.12 venv), these are the versions the notebook was tested with:
+#   python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-colab.txt -r requirements-nb03.txt jupyter
+# (The original A40 run used torch 2.9 with CUDA 12.8 and transformers 5.22.2; see a40/make_venv.sh.)
+torch==2.9.1
+transformers==5.22.2

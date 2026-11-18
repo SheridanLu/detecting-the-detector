@@ -1,5 +1,0 @@
-pitfall,what_went_wrong,number,caption,what_it_means,change
-1,Our first model looked strong,0.890 vs 0.888,AUC: our model vs just guessing the source,A high score can just mean the model recognises the source.,Stopped using it; tested on seven new data sources.
-2,RoBERTa learned a formatting shortcut,0.04 to 0.91,"AUC, same prompts: before vs after cleaning","It learned the layout of the text, not the writing.",Made every text look the same; added a check.
-3,Qwen was tested on essays it had trained on,0% to 40%,TOEFL essays flagged (2 seeds: 56% and 23%),Testing on training essays makes a model look far better than it is.,Kept TOEFL out of training; re-tested.
-4,Our native comparison was unfair,2% vs 80-100%,"native flagged: familiar vs new style (logistic regression, RoBERTa)",Testing only on familiar native essays hid the real problem.,Added arms C and D and more kinds of native writing.

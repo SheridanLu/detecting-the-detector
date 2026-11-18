@@ -1,0 +1,9 @@
+# For running the notebooks OUTSIDE Colab (plain Python 3.10-3.12 venv). These are the packages Colab preinstalls,
+# pinned to the versions of the original A40 run (scikit-learn, pandas, numpy, scipy, pyarrow), plus matplotlib.
+#   python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-colab.txt jupyter
+numpy==2.4.6
+pandas==3.1.1
+scikit-learn==1.9.1
+scipy==1.17.1
+pyarrow==26.0.1
+matplotlib==3.10.8

@@ -1,7 +1,0 @@
-orig shard keys=30 common_with_dequant=30
-FP8->bf16: n=17 max_rel_err=0.0266 mean_rel_err=0.0265 min_cos=0.999647
-kept as-is: n=13 max_rel_err=0.0000 mean_rel_err=0.0000 min_cos=0.999985
-worst: fp8=True rel=0.0266 cos=1.019396 model.language_model.layers.21.mlp.gate_proj.weight
-worst: fp8=True rel=0.0266 cos=1.019405 model.language_model.layers.23.mlp.up_proj.weight
-worst: fp8=True rel=0.0266 cos=1.019184 model.language_model.layers.21.mlp.up_proj.weight
-CHECK PASS (fp8_compared=17, bad=0)

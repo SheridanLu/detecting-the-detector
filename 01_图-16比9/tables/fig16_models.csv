@@ -1,4 +1,0 @@
-model,family,reads,trained,why,cost
-Logistic regression,CLASSICAL ML  |  course method,"Counts words and word pairs (TF-IDF, 20,000 features) and gives each one a weight","8,000 essays per arm (4,000 human + 4,000 AI). 5 random seeds","Simple and fast, and it shows which words push the score up",Seconds on a laptop CPU
-RoBERTa,DEEP LEARNING  |  extension,Reads the whole sentence in context. All 125 million parameters are updated,"The same 8,000 essays. 2 passes, up to 512 words each. 5 seeds",The standard deep-learning text classifier: shows what context adds,About 4 minutes on one GPU
-Qwen 27B + LoRA,LARGE LANGUAGE MODEL  |  extension,A 27-billion-parameter model that has read huge amounts of text. We keep it frozen,"Only a small add-on is trained (LoRA): 125 million numbers, 0.48% of the model. The same 8,000 essays, 1 pass, 2 seeds",LoRA is what makes a 27B model trainable on two 46 GB GPUs,About 4 hours on two GPUs (2.9 h training + 74 min scoring)

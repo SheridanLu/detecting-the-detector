@@ -1,0 +1,11 @@
+# Extra packages for notebook 04 (Qwen + LoRA). The notebook's first cell installs this file only if something is
+# missing (Colab preinstalls torch and transformers, but not peft).
+# Tested (macOS CPU, Python 3.12): torch 2.15.0, transformers 5.23.0, peft 0.21.3, accelerate 1.16.0,
+# huggingface_hub 2.4.0, safetensors 0.8.0. Not yet tested on a Colab GPU runtime.
+# Local use: python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-nb04.txt jupyter
+torch>=2.4
+transformers>=4.56
+peft==0.21.3          # same version as the original 27B run (recorded in each adapter_config.json)
+accelerate>=1.0
+huggingface_hub>=0.34
+safetensors>=0.4

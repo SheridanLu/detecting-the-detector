@@ -1,0 +1,8 @@
+{
+ "exam_style_train_pool": 3501,
+ "removed_overlap_C": 0,
+ "hcvar_human_pool": 10000,
+ "removed_overlap_D": 0,
+ "final_overlap_C": 0,
+ "final_overlap_D": 0
+}
