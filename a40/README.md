@@ -25,3 +25,5 @@ on that server) exists only there, so `train_qwen.py` cannot be re-run elsewhere
 Not included: scripts that stop and restart the server's shared production service around the GPU runs
 (`run_all*.sh` call one of them, `restore_prod.sh`), a progress monitor and a scheduling helper. They contain no
 experimental logic.
+
+`dequant_fp8_to_bf16.py` and `check_dequant_vs_bf16.py` convert the Qwen3.8-27B FP8 weights to bf16 once and measure the weight error (about 2.7%). They need the 27B weights, which exist only on our server, so there is no notebook for them.

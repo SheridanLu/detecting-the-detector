@@ -60,7 +60,7 @@ placeholder), `falcon_ppl` (perplexity under falcon-7b, text cut at 512 tokens, 
 
 Hewlett has `@` placeholders in 85 of 88 essays, so it must not be used for perplexity comparisons.
 
-## results/ (tables computed by the original run; used as the reference in notebooks 02 and 05)
+## results/ (tables computed by the original run; used as the reference in notebooks 02, 05 and 06)
 
 | file | rows | made by | content |
 |---|---|---|---|
@@ -72,3 +72,4 @@ Hewlett has `@` placeholders in 85 of 88 essays, so it must not be used for perp
 | `prf1_runs.csv`, `prf1_summary.csv` | 57 / 21 | `a40/prf1.py` | Accuracy, precision, recall, F1 (and balanced F1 for TOEFL / Hewlett) on the Liang test set, threshold 0.5. |
 | `model_comparison_all.csv` | 14 | ad-hoc aggregation on the server (script not saved); notebook 05 reproduces it exactly from `preds/` | Mean over seeds of flag rates at 0.5 per corpus, detection rates, AUCs, SD of the TOEFL rate. |
 | `length_control.csv` | 66 | `a40/length_control.py` | Bias AUC over all pairs vs over length-matched TOEFL / Hewlett pairs. |
+| `lime_words_armA.csv` | 22 (2 essay rows + 10 word rows each, 9 columns) | LIME run on the A40 server (`lime` 0.2.0.1, `LimeTextExplainer`, arm A seed 0, class AI, `num_features=10`, `num_samples=5000`, `random_state=42`); the script was kept with the slide figures, not in `a40/` | **Exploratory side analysis, not in the slides.** Reference for notebook 06 (`06_lime_word_explanations`). Columns: essay (`toefl84` = TOEFL_real_91 essay 84; `college23_excerpt` = first 98 words of CollegeEssay_real_70 essay 23), row_type (`essay` or `word`), word, lime_weight_armA (the 10 strongest words, in probability points), p_ai_armA and p_ai_armC (probability of AI under the arm A and arm C detectors; on the `essay` rows only), n_words, lime_local_R2_armA (how well LIME's local word model fits arm A's detector around the essay), text (the cleaned essay that was explained). Only arm A has word weights; arm C has only the probability. |

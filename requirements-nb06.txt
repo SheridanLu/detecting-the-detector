@@ -1,0 +1,5 @@
+# Extra package for notebook 06 (LIME word explanations). Google Colab does NOT preinstall it; the first notebook cell
+# pip-installs it only if `import lime` fails. numpy, pandas, scikit-learn, scipy and matplotlib are already in requirements-local.txt / on Colab.
+# Outside Colab: python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-colab.txt -r requirements-nb06.txt jupyter
+# Credit: Ribeiro, Singh, Guestrin (2016), KDD; code https://github.com/marcotcr/lime
+lime==0.2.0.1
