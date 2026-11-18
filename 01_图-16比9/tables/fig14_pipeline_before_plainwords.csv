@@ -1,0 +1,7 @@
+step,name,headline
+1,Collect,8 sources
+2,Clean,same rules
+3,Remove duplicates,0 overlap
+4,Split,"10,171 test essays"
+5,Train,3 models x 4 arms
+6,Evaluate,threshold 0.5

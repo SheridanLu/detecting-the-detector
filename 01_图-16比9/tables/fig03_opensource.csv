@@ -1,0 +1,10 @@
+detector,x,toefl_flagged_pct,open_source
+OriginalityAI,0.0,75.82417582417582,False
+Quil,1.0,74.72527472527473,False
+Sapling,2.0,68.13186813186813,False
+HFOpenAI,3.0,58.24175824175825,False
+ZeroGPT,4.0,52.74725274725275,False
+Crossplag,5.0,51.64835164835166,False
+GPTZero,6.0,51.64835164835166,False
+Binoculars,7.6,6.593406593406594,True
+Fast-DetectGPT,8.6,35.16483516483517,True

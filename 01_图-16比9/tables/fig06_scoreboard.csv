@@ -1,0 +1,8 @@
+metric,LR,RoBERTa,Qwen27B
+"Catches AI on the same prompts (AUC, arm A; higher = better)",0.7387653325268004,0.9076748328124475,0.990377054138522
+Unfamiliar native essays wrongly flagged (arm A; lower = better),85.06666666666666,68.67651888341543,29.277504105090312
+"TOEFL essays wrongly flagged, after adding exam-style data (arm C)",7.912087912087913,26.153846153846157,4.945054945054945
+"Run-to-run variation of that rate (SD across seeds, arm C)",0.9194066225649185,7.629254926465838,0.7770404188863157
+Training + scoring time,seconds,about 4 min,about 4 h
+Hardware used,laptop CPU,1 GPU (A40),2 GPUs (A40)
+Shows which words push the score?,Yes,No,No

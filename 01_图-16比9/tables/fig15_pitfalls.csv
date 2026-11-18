@@ -1,0 +1,5 @@
+pitfall,what_went_wrong,number,caption,what_it_means
+1,First model looked strong,0.890 vs 0.888,AUC: our model vs guessing the source,A high score can just mean the model spots where an essay came from.
+2,RoBERTa learned a format shortcut,0.04 to 0.91,"AUC on same-prompt essays, before vs after cleaning",It learned how the text was laid out instead of how it was written.
+3,Qwen tested on its own training essays,0% to 40%,TOEFL essays flagged (2 runs: 56% and 23%),Testing on training essays makes a model look far better than it is.
+4,Unfair native comparison,2% vs 80-100%,"native flagged, familiar vs new style; logistic regression and RoBERTa",Testing only on familiar native essays hid the problem.

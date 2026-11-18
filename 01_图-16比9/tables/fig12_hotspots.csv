@@ -1,0 +1,9 @@
+item,flagged_by_of_7,falcon_perplexity,value
+toefl84,7.0,8.751879275270774,
+college,0.0,21.044044239384057,
+polished84,0.0,13.269800800919883,
+GPTZero median perplexity TOEFL,,,42.166666666666664
+GPTZero median perplexity native college,,,86.38973577235772
+GPTZero median burstiness TOEFL,,,24.635679244995117
+GPTZero median burstiness native college,,,81.68362045288086
+share of TOEFL essays below median native falcon perplexity,,,0.8901098901098901

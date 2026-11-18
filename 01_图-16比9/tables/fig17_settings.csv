@@ -1,0 +1,6 @@
+row,Logistic regression,RoBERTa,Qwen 27B + LoRA
+What it is,"TF-IDF of words and word pairs (20,000 features, rare words dropped) + logistic regression","roberta-base, all 125 million parameters trained","Qwen3.8-27B, frozen; LoRA add-on on all linear layers (rank 16, alpha 32, dropout 0.05)"
+Training settings,"Same as the course notebook; up to 2,000 solver steps","Learning rate 2e-5, batch 16, 2 passes, up to 512 words","Learning rate 1e-4, batch 8 x 2, 1 pass (500 steps), up to 512 words"
+Where the settings came from,Course notebook defaults,"Common values for fine-tuning; passes cut from 4 to 2 when training grew from 220 to 8,000 essays","Common LoRA values; passes cut from 3 to 1 when training grew from 267 to 8,000 essays"
+Tuned on validation data?,No,No,No
+Random seeds,5,5,2 (too slow for more)

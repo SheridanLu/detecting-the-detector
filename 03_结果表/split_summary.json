@@ -1,0 +1,55 @@
+{
+  "exam_counts": {
+    "E1|CS224N_gpt3PromptEng_145": 145,
+    "E1|CS224N_gpt3_145": 145,
+    "E1|CS224N_real_145": 145,
+    "E1|CollegeEssay_gpt3PromptEng_31": 31,
+    "E1|CollegeEssay_gpt3_31": 31,
+    "E1|CollegeEssay_real_70": 70,
+    "E1|HewlettStudentEssay_GPTsimplify_88": 88,
+    "E1|HewlettStudentEssay_real_88": 88,
+    "E1|TOEFL_gpt4polished_91": 91,
+    "E1|TOEFL_real_91": 91,
+    "E2|PERSUADE_ELL": 792,
+    "E2|PERSUADE_nonELL": 800,
+    "E3|LOCNESS_native": 50,
+    "E3|WI_A": 1430,
+    "E3|WI_B": 1100,
+    "E3|WI_C": 770,
+    "E4|FCE": 2469,
+    "E5|ELLIPSE_test": 2901,
+    "E6|HCVar_ChatGPT_AI": 400,
+    "E6|daigt_llama_AI": 400,
+    "E7|ArguGPT_TOEFL_AI": 1635
+  },
+  "pool_counts": {
+    "persuade_nonELL": 21345,
+    "daigt_ai": 7708,
+    "hcvar_ai": 3950,
+    "ellipse": 1008,
+    "persuade_ELL": 1000
+  },
+  "val_counts": {
+    "persuade_nonELL": 300,
+    "daigt_ai": 150,
+    "hcvar_ai": 150
+  },
+  "removed_vs_exams": {
+    "native_pool_vs_exams": 0,
+    "persuade_ell_pool_vs_exams": 0,
+    "ellipse_train_vs_exams": 2,
+    "ai_val_vs_exams": 0,
+    "ai_pool_vs_exams": 48,
+    "hcvar_val_vs_exams": 0,
+    "hcvar_pool_vs_exams": 0
+  },
+  "persuade_ell_total": 2244,
+  "persuade_ell_in_ellipse": 452,
+  "daigt_after_dedup": 8306,
+  "n_manifests": 30,
+  "final_overlap_train_val_vs_exams": 0,
+  "sha256_exams.parquet": "6dd0567823d717213f0e4ed7d6b1d831439b8f058e1299ce4843b8de29dac8e5",
+  "sha256_pool.parquet": "d0fc60f3d4aaa0818cbfdb8edd52e4329e24159f3cb9df90f9a6d28eedc41665",
+  "sha256_val.parquet": "3e26d7dad195b8ec3714b6a59a7f3744752febe11c56d90daf59c91dd837867b",
+  "sha256_manifests.json": "e5f15e1787cadb209eaa6181700c457d98289a8639c6c783f5b71b869e05784a"
+}
