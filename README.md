@@ -29,7 +29,7 @@ Each notebook has a CONFIG cell with three modes: SMOKE (seconds, for automated 
 | `01_audit_commercial_and_opensource` | audit of the 7 commercial and 2 open-source detectors: false-flag rates, AUCs, F1, length control, why predictable text looks like AI, whether GPT-4 polishing removes the false flags; Binoculars and Fast-DetectGPT written out from the papers | numbers **replayed** from saved scores; live demo with small stand-in models (gpt2 pair on CPU) | ~2 min (CPU) | optional |
 | `02_ml_logistic_regression` | trains TF-IDF + logistic regression for arms A-D x 5 seeds, false-flag rates, precision/recall/F1, comparison with the archived numbers | **re-run** from scratch | ~1.5 min (FULL ~2.5 min) | no |
 | `03_dl_roberta` | RoBERTa-base fine-tuning, arms A-D | all 40 archived runs **replayed** in every mode; **re-training** in SMOKE (64 essays, ~1 min on CPU), FAST (arms A, C, 1 seed) and FULL (4 arms x 5 seeds) | SMOKE ~1 min; FAST/FULL need a GPU (estimates on a T4: FAST 30-50 min, FULL 5-8.5 h, **not measured**) | T4 for FAST/FULL |
-| `04_lora_qwen` | Qwen3.8-27B + LoRA: replay of the 27B results, a look inside the published LoRA adapters (reads only the file header, checks 124,741,120 parameters), and a small **stand-in** LoRA training on Qwen3-0.6B | 27B numbers **replayed**; adapter inspection reads one adapter from Hugging Face; stand-in is **re-run** (SMOKE ~5 min on CPU; FAST/FULL on a T4 are estimates, not measured) | SMOKE ~5 min | T4 for FAST/FULL |
+| `04_lora_qwen` | Qwen3.8-27B + LoRA: replay of the 27B results, a look inside the published LoRA adapters (reads only the file header, checks 124,741,120 parameters), a small **stand-in** LoRA training on Qwen3-0.6B, and (Part 4, off by default) the **real 27B**: public FP8 base model converted to bf16 as on our server, archived adapters attached and their scores reproduced by inference, optional re-training | 27B numbers **replayed**; adapter inspection reads one adapter from Hugging Face; stand-in is **re-run** (SMOKE ~5 min on CPU; FAST/FULL on a T4 are estimates, not measured); Part 4 **reproduces by inference / re-runs** the 27B, but **has not been executed by us on a suitable GPU** (only its no-GPU pre-flight checks run by default) | SMOKE ~5 min | T4 for FAST/FULL; Part 4: >= 80 GB (Colab Pro RTX PRO 6000 96 GB, A100/H100 80 GB) |
 | `06_lime_word_explanations` | exploratory side analysis (**not in our slides**): which words push our logistic-regression detector toward AI, with the official LIME package, for two example essays | **re-run** (trains arms A and C, then LIME) and compared with the archived values | ~20-45 s | no |
 | `05_metrics_and_figures` | recomputes all headline tables for all detectors and draws the main figures | **replayed** from saved scores in `data/preds/` and `data/commercial/` | ~5 s | no |
 
@@ -49,10 +49,10 @@ by Liang et al. in 2023; the 2023 detector versions can no longer be queried). T
 | GPT-4 polishing of TOEFL essays | 01 (section 1.7) | replayed from the commercial scores of the polished essays |
 | logistic regression, arms A-D x 5 seeds | 02 | **re-run** |
 | RoBERTa-base, arms A-D x 5 seeds | 03 | 40 archived runs replayed; re-training needs a GPU (not tested) |
-| Qwen3.8-27B + LoRA, arms A-D x 2 seeds | 04 | replayed (cannot be re-run: the base model exists only on our server); adapters inspected from Hugging Face; Qwen3-0.6B stand-in re-run |
+| Qwen3.8-27B + LoRA, arms A-D x 2 seeds | 04 | replayed; adapters inspected from Hugging Face; Qwen3-0.6B stand-in re-run; Part 4 (off by default, GPU with >= 80 GB) reproduces `seed0_A_n4000` and `seed0_C` by inference and can re-train arms A and C (**not executed by us**) |
 | precision / recall / F1, bias AUC, paired tests, figures | 05 | replayed |
 | LIME word explanations (side analysis, not in the slides) | 06 | **re-run** |
-| FP8 to bf16 conversion of the 27B base model and its error check | not in a notebook | scripts in `a40/` (need the 27B weights) |
+| FP8 to bf16 conversion of the 27B base model and its error check | 04 (Part 4a) for the conversion; error check not in a notebook | conversion ported to `ddlib/lora_qwen.py` (same rule; bit-identical to `a40/dequant_fp8_to_bf16.py` on a tiny test checkpoint), runs only in Part 4; the error check against the official bf16 repo is the script `a40/check_dequant_vs_bf16.py` |
 
 The eight Qwen LoRA adapters (3.99 GB) are on Hugging Face (private):
 `SheridanLu/detecting-the-detector-qwen-lora`. Notebook 04 reads a token from the Colab secret `HF_TOKEN`
@@ -77,8 +77,12 @@ copied from the original, metrics, plots). To run outside Colab:
 
 ## Limits: what cannot be reproduced on free Colab
 
-* **Qwen3.8-27B + LoRA** exists only on the A40 server (weights dequantised there from FP8); training took about 4 h
-  on two 46 GB GPUs per run. Its numbers can only be replayed from the saved scores.
+* **Qwen3.8-27B + LoRA** needs a GPU with >= 80 GB. Its base model is the public `Qwen/Qwen3.8-27B-FP8` (31 GB),
+  dequantised to bf16 (55.6 GB) exactly as on our server; training took about 4 h per run on two 46 GB GPUs. On free
+  Colab its numbers can only be replayed from the saved scores. Notebook 04, Part 4 (off by default) can reproduce
+  them by inference or re-train on Colab Pro with an RTX PRO 6000 (96 GB) or an A100/H100 (80 GB). **This has NOT been
+  executed by us on such a GPU**: Part 4 was tested only on a laptop CPU, with a tiny random model of the same
+  architecture standing in for the 27B; all its time and memory figures are estimates.
 * **Binoculars / Fast-DetectGPT** need falcon-7b and falcon-7b-instruct together (about 28 GB in bf16), which does not
   fit a 16 GB T4. Replayed only.
 * **Commercial detectors**: the 2023 versions are gone; we use the scores archived by Liang et al.
@@ -90,7 +94,8 @@ copied from the original, metrics, plots). To run outside Colab:
   FAST and FULL; 01 in SMOKE and FAST; 03 and 04 in SMOKE only. **Nothing has been run on a GPU or on a real Colab
   runtime**: RoBERTa re-training (03, FAST/FULL) and the Qwen3-0.6B stand-in training (04, FAST/FULL) are untested on
   a GPU, and their T4 times are estimates. A FAST attempt of notebook 03 on a laptop GPU was abandoned (arm A alone
-  took 37 minutes).
+  took 37 minutes). Part 4 of notebook 04 (real 27B) ran only with `RUN_27B` off (its no-GPU pre-flight checks) and
+  in a test mode in which a tiny random Qwen3.5 model on the CPU stands in for the 27B.
 * The Qwen LoRA adapters attach LoRA matrices to every linear layer, including the image encoder; 110 `lora_B`
   matrices there are exactly zero (never updated; the task is text only), so slightly fewer than the 124,741,120
   parameters marked trainable actually changed. No prediction is affected.

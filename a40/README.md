@@ -3,8 +3,9 @@
 These are verbatim copies of the scripts that produced every number in this project. They ran on a shared GPU
 server with 8x NVIDIA A40 (46 GB each) on 16-17 November 2026, with Python 3.11, scikit-learn 1.9.1, pandas 3.1.1,
 numpy 2.4.6. They contain the server's absolute paths (`/data/int4096_unified_v4/...`) and will not run elsewhere
-without editing; the notebooks in `notebooks/` are the portable version. Qwen3.8-27B (dequantised from FP8 to bf16
-on that server) exists only there, so `train_qwen.py` cannot be re-run elsewhere.
+without editing; the notebooks in `notebooks/` are the portable version. The dequantised bf16 copy of Qwen3.8-27B
+exists only on that server (the FP8 original is public: `Qwen/Qwen3.8-27B-FP8`), so `train_qwen.py` cannot be re-run elsewhere
+as written; notebook 04 (Part 4) is the portable single-GPU version for a GPU with at least 80 GB.
 
 | file | role |
 |---|---|
@@ -26,4 +27,4 @@ Not included: scripts that stop and restart the server's shared production servi
 (`run_all*.sh` call one of them, `restore_prod.sh`), a progress monitor and a scheduling helper. They contain no
 experimental logic.
 
-`dequant_fp8_to_bf16.py` and `check_dequant_vs_bf16.py` convert the Qwen3.8-27B FP8 weights to bf16 once and measure the weight error (about 2.7%). They need the 27B weights, which exist only on our server, so there is no notebook for them.
+`dequant_fp8_to_bf16.py` and `check_dequant_vs_bf16.py` convert the Qwen3.8-27B FP8 weights to bf16 once and measure the weight error (about 2.7%). Notebook 04 (Part 4) contains a ported, tested version of the conversion (it downloads the public FP8 repo).

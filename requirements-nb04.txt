@@ -1,10 +1,12 @@
 # Extra packages for notebook 04 (Qwen + LoRA). The notebook's first cell installs this file only if something is
-# missing (Colab preinstalls torch and transformers, but not peft).
+# missing (Colab preinstalls torch and transformers, but not peft) or if the installed transformers has no Qwen3.5
+# classes (needed by Part 4, the real Qwen3.8-27B).
 # Tested (macOS CPU, Python 3.12): torch 2.15.0, transformers 5.23.0, peft 0.21.3, accelerate 1.16.0,
 # huggingface_hub 2.4.0, safetensors 0.8.0. Not yet tested on a Colab GPU runtime.
+# The original 27B run (a40/make_venv.sh) used Python 3.11, torch 2.9 (CUDA 12.8), transformers 5.22.2, peft 0.21.3.
 # Local use: python3.12 -m venv .venv && .venv/bin/pip install -r requirements-local.txt -r requirements-nb04.txt jupyter
 torch>=2.4
-transformers>=4.56
+transformers>=5.22.2  # Qwen3.5 classes (Part 4); 5.22.2 = version of the original 27B run
 peft==0.21.3          # same version as the original 27B run (recorded in each adapter_config.json)
 accelerate>=1.0
 huggingface_hub>=0.34
